@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Book Search</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .container-fluid {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0;
+      }
+      .header,
+      .footer {
+        width: 100%;
+        background-color: #343a40;
+        color: white;
+        text-align: center;
+        padding: 10px 0;
+      }
+      .table-container {
+        flex: 1;
+        overflow-y: auto;
+        width: 70%;
+      }
+      .card-img-top {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+      }
+      .card {
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <!-- Header -->
+      <div class="header">
+        <h1>Book details</h1>
+      </div>
+
+      <br />
+      <div class="table-container">
+        <div class="card mb-3">
+          <img
+            src="https://covers.openlibrary.org/b/id/{{ data.cover_id }}-M.jpg"
+            class="card-img-top"
+            alt="..."
+          />
+          <div class="card-body">
+            <h5 class="card-title">{{data.title}}</h5>
+            <p class="card-text">{{data.description.value}}</p>
+            <p class="card-text">toatal pages {{pages}}</p>
+
+            <p class="card-text">
+              <a
+                href="{% url 'rent_book_mon' key pages author %}"
+                class="btn btn-primary"
+                >Rent Book</a
+              >
+            </p>
+
+            <p class="card-text">
+              <small class="text-muted">Last updated 3 mins ago</small>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <p>&copy; 2024 Book Search. All rights reserved.</p>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

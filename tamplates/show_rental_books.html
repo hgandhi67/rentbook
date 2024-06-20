@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Book Search</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .container-fluid {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0;
+      }
+      .form-inline {
+        display: flex;
+        justify-content: flex-end;
+        width: 57%;
+      }
+      .header,
+      .footer {
+        width: 100%;
+        background-color: #343a40;
+        color: white;
+        text-align: center;
+        padding: 10px 0;
+      }
+      .table-container {
+        flex: 1;
+        overflow-y: auto;
+        width: 100%;
+      }
+      .card-img-top {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+      }
+      .card {
+        margin-bottom: 20px;
+      }
+
+      .books {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <!-- Header -->
+      <div class="header">
+        <h1>Book Search</h1>
+
+        <div>
+          <p class="text-resize">{{ current_user }}</p>
+          <a class="btn btn-primary" name="post" href="{% url 'logout' %}"
+            >Logout</a
+          >
+        </div>
+      </div>
+      <br />
+      <form
+        method="POST"
+        action="{% url 'view' %}"
+        class="form-inline justify-content"
+      >
+        {% csrf_token %}
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="book_title" class="sr-only">Book Title</label>
+          <input
+            type="text"
+            class="form-control"
+            name="book_title"
+            placeholder="Book Title"
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary mb-2">Search</button>
+      </form>
+      <h5 class="card-title">Saved Book</h5>
+
+      <div class="table-container">
+        <div class="row" style="margin: 0">
+          {% if bookdata %} {% for book in bookdata %}
+          <div class="col-md-6">
+            <div class="card mb-3" style="max-width: 540px">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  {% if book.cover_id %}
+                  <img
+                    src="https://covers.openlibrary.org/b/id/{{ book.cover_id }}-M.jpg"
+                    class="img-fluid rounded-start"
+                    alt="Book Cover"
+                  />
+                  {% else %}
+                  <img
+                    src="placeholder_image_url"
+                    class="img-fluid rounded-start"
+                    alt="No Image Available"
+                  />
+                  {% endif %}
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p class="card-text">pages: {{ book.pages }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %} {% else %}
+          <div class="col-12 text-center">
+            <p>No data found</p>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      <h5 class="card-title">Search Options</h5>
+      <!-- Table Container -->
+      <div class="table-container">
+        <div class="row" style="margin: 0">
+          {% if data %} {% for book in data %}
+          <div class="col-md-6">
+            <div class="card mb-3" style="max-width: 540px">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  {% if book.cover_id %}
+                  <img
+                    src="https://covers.openlibrary.org/b/id/{{ book.cover_id }}-M.jpg"
+                    class="img-fluid rounded-start"
+                    alt="Book Cover"
+                  />
+                  {% else %}
+                  <img
+                    src="placeholder_image_url"
+                    class="img-fluid rounded-start"
+                    alt="No Image Available"
+                  />
+                  {% endif %}
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p class="card-text">Author: {{ book.author }}</p>
+                    <p
+                      class="card-text"
+                      style="
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        width: 98%;
+                      "
+                    >
+                      Subjects: {{ book.subject }}
+                    </p>
+                    <p class="card-text">
+                      Publish Year: {{ book.publish_year }}
+                    </p>
+                    <p class="card-text">Pages: {{ book.total_pages }}</p>
+                    <a
+                      href="{% url 'load_details' book.key book.total_pages %}"
+                      class="btn btn-primary"
+                      >Read More</a
+                    >
+                    <a
+                      href="{% url 'rent_book_mon' book.key book.total_pages %}"
+                      class="btn btn-secondary"
+                      >Direct Read and Rent</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %} {% else %}
+          <div class="col-12 text-center">
+            <p>No data found</p>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      <!-- Footer -->
+      <div class="footer">
+        <p>&copy; 2024 Book Search. All rights reserved.</p>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
